@@ -119,8 +119,8 @@ class Tracker:
         predict_sec_spinbox.pack(pady=2)
 
         # Поле для времени прогноза
-        tk.Label(control_frame, text="Время прогноза (ГГГГ-ММ-ДД ЧЧ:ММ:СС) UTC+0 :", bg='lightgray').pack(pady=5)
-        self.time_predict_var = tk.StringVar(value=dt.datetime.now(dt.timezone.utc).strftime("%Y-%m-%d %H:%M:%S"))
+        tk.Label(control_frame, text="Время прогноза (ГГГГ-ММ-ДД ЧЧ:ММ:СС.мс) UTC+0 :", bg='lightgray').pack(pady=5)
+        self.time_predict_var = tk.StringVar(value=dt.datetime.now(dt.timezone.utc).strftime("%Y-%m-%d %H:%M:%S.%f")[:-3])
         time_predict_entry = tk.Entry(control_frame, textvariable=self.time_predict_var, width=40)
         time_predict_entry.pack(pady=2)
 
@@ -156,7 +156,7 @@ class Tracker:
 
     def __set_current_time(self):
         """Установка текущего времени UTC в поле ввода"""
-        current_time = dt.datetime.now(dt.timezone.utc).strftime("%Y-%m-%d %H:%M:%S")
+        current_time = dt.datetime.now(dt.timezone.utc).strftime("%Y-%m-%d %H:%M:%S.%f")[:-3]
         self.time_predict_var.set(current_time)
 
     def __reload_map(self):
@@ -213,7 +213,7 @@ class Tracker:
             predict_sec_per_step = self.predict_sec_per_step_var.get()
             # Парсим время
             try:
-                time_predict = dt.datetime.strptime(self.time_predict_var.get(), "%Y-%m-%d %H:%M:%S")
+                time_predict = dt.datetime.strptime(self.time_predict_var.get(), "%Y-%m-%d %H:%M:%S.%f")
                 time_predict = time_predict.replace(tzinfo=dt.timezone.utc)
             except ValueError:
                 self.status_label.config(text="Ошибка: неверный формат времени", fg='red')
@@ -285,7 +285,7 @@ class Tracker:
                 # Создаем маркер
                 marker = map_widget.set_marker(
                     lat, lon, 
-                    text=f"{' '*25}{current_time.strftime('%H:%M:%S')}",
+                    text=f"{' '*25}{current_time.strftime('%H:%M:%S.%f')[:-3]}",
                     icon = tk.PhotoImage(file="icon.png"),
                     text_color = "#FFFFFF",
                 )
