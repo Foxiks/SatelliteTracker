@@ -51,7 +51,7 @@ class Tracker:
     def __make_tracker_window(self):
         root_tk = tk.Tk()
         root_tk.geometry(f"{1920}x{1080}")
-        root_tk.title("Спутниковый трекер")
+        root_tk.title("SatelliteTracker [ver 1.0.2]")
         root_tk.resizable(False, True)
         return root_tk
 
@@ -285,9 +285,9 @@ class Tracker:
                 # Создаем маркер
                 marker = map_widget.set_marker(
                     lat, lon, 
-                    text=f"{' '*25}{current_time.strftime('%H:%M:%S.%f')[:-3]}",
+                    text=f"{' '*45}{current_time.strftime('%B %d, %H:%M:%S.%f')[:-3]}",
                     icon = tk.PhotoImage(file="icon.png"),
-                    text_color = "#FFFFFF",
+                    text_color = "#FFFFFF"
                 )
                 # Добавляем координаты в массив
                 dots_arr.append((lat, lon))
